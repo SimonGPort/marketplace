@@ -16,6 +16,13 @@ class UnconnectedApp extends Component {
       </div>
     );
   };
+  renderRegisterPage = () => {
+    return (
+      <div>
+        <Register />
+      </div>
+    );
+  };
 
   render = () => {
     return (
@@ -27,6 +34,7 @@ class UnconnectedApp extends Component {
             user={this.props.user}
           />
           <Route exact={true} path="/" render={this.renderSellPage} />
+          <Route exact={true} path="/" render={this.renderRegisterPage} />
         </div>
       </BrowserRouter>
     );

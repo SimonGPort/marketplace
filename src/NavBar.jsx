@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class NavBar extends Component {
   constructor(props) {
@@ -9,15 +10,24 @@ class NavBar extends Component {
     if (this.props.login === false) {
       return (
         <div>
-          <button>Register</button> or
-          <button>Login</button>
+          <Link to="/register">
+            <button>Register</button>
+          </Link>
+          or
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
         </div>
       );
     } else {
       return (
         <div>
-          <button>Checkout</button>
-          <button>Logout</button>
+          <Link to="/checkout">
+            <button>Checkout</button>
+          </Link>
+          <Link to="/">
+            <button>Logout</button>
+          </Link>
         </div>
       );
     }
