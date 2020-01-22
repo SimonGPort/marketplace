@@ -3,6 +3,7 @@ import NavBar from "./NavBar.jsx";
 import { connect } from "react-redux";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 import Category from "./Category.jsx";
+import Register from "./Register.jsx";
 
 class UnconnectedApp extends Component {
   constructor(props) {
@@ -16,10 +17,10 @@ class UnconnectedApp extends Component {
       </div>
     );
   };
-  renderRegisterPage = () => {
+  renderRegisterPage = routeProps => {
     return (
       <div>
-        <Register />
+        <Register history={routeProps.history} />
       </div>
     );
   };
@@ -34,7 +35,11 @@ class UnconnectedApp extends Component {
             user={this.props.user}
           />
           <Route exact={true} path="/" render={this.renderSellPage} />
-          <Route exact={true} path="/" render={this.renderRegisterPage} />
+          <Route
+            exact={true}
+            path="/register"
+            render={this.renderRegisterPage}
+          />
         </div>
       </BrowserRouter>
     );

@@ -1,65 +1,74 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Register extends Component {
-    
-        constructor() {
-          super();
-          this.state = {
-            usernameInput:"",
-            emailInput:""
-            passwordInput:""
-          };
-        }
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      email: "",
+      password: ""
+    };
+  }
 
-        usernameChange = evt => {
-          this.setState({ usernameInput: evt.target.value });
-        };
-        emailChange = evt => {
-            this.setState({ emailInput: evt.target.value });
-          };
-        passwordChange = evt => {
-          this.setState({ passwordInput: evt.target.value });
-        };
+  usernameChange = evt => {
+    this.setState({ username: evt.target.value });
+  };
+  emailChange = evt => {
+    this.setState({ email: evt.target.value });
+  };
+  passwordChange = evt => {
+    this.setState({ password: evt.target.value });
+  };
 
+  submitHandler = async evt => {
+    evt.preventDefault();
+    console.log("username", this.state.username);
+    console.log("email", this.state.email);
+    console.log("password", this.state.password);
+    let data = new FormData();
+    data.append("username", this.state.username);
+    data.append("email", this.state.email);
+    data.append("password", this.state.password);
+    let response = await fetch("/signup", { method: "POST", body: data });
+    let body = await response.text();
+    console.log("/register response", body);
+    body = JSON.parse(body);
+    if (body.success) {
+      this.props.dispatch({
+        type: "signup",
+        login: true,
+        username: this.state.usernameInput
+      });
+      this.props.history.push("/");
+    } else {
+      alert(error);
+    }
+  };
 
-        ///////Je suis rendu ICI 19 janvier, il faut faire un backend qui recoit le post register et un reducer qui recoit le dispatcher login!!!
-        submitHandler = async evt => {
-          evt.preventDefault();
-          console.log('username', this.state.username);
-          console.log('email', this.state.email);
-          console.log('password', this.state.passwordInput);
-          let data = new FormData();
-          data.append('username', this.state.usernameInput);
-          data.append('email', this.state.emailInput);
-          data.append('password', this.state.passwordInput);
-          let response = await fetch('/register', { method: 'POST', body: data });
-          let body = await response.text();
-          console.log('/register response', body);
-          body = JSON.parse(body);
-          if (body.success) {
-            return(
-                this.props.router.push('/');
-            this.props.dispatch({ type: 'login', login: true });
-            )
-          }else{alert(error)}
-        };
-
-    render = () => {
-      return (
-<>
-Sign up
+  render = () => {
+    return (
+      <>
+        Sign up
         <form onSubmit={this.submitHandler}>
-          Username
-          <input type="text" onChange={this.usernameChange} /> 
-          Email
-          <input type="text" onChange={this.emailChange} /> 
-          Password
-          <input type="text" onChange={this.passwordChange} />
-          <input type="submit" value="login" />
+          <div>
+            Username
+            <input type="text" onChange={this.usernameChange} />
+          </div>
+          <div>
+            Email
+            <input type="text" onChange={this.emailChange} />
+          </div>
+          <div>
+            Password
+            <input type="text" onChange={this.passwordChange} />
+          </div>
+          <input type="submit" value="signup" />
         </form>
       </>
-      )}
+    );
+  };
+}
 
-
-      export default Register;
+export default connect()(Register);

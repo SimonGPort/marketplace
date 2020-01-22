@@ -1,11 +1,14 @@
 import { createStore } from "redux";
 let reducer = (state, action) => {
-  //   if (action.type === "login-success") {
-  //     return { ...state, loggedIn: true, username: action.username };
-  //   }
-  //   if (action.type === "logout") {
-  //     return { ...state, loggedIn: false };
-  //   }
+  if (action.type === "signup") {
+    return { ...state, login: action.login, user: action.username };
+  }
+  if (action.type === "logout") {
+    return { ...state, login: action.login };
+  }
+  // if (action.type === "user") {
+  //   return { ...state, user: action.username };
+  // }
   //   if (action.type === "set-messages") {
   //     const chatRoomsCopy = { ...state.chatRooms };
   //     chatRoomsCopy[action.roomName] = {
@@ -37,7 +40,7 @@ let reducer = (state, action) => {
   //       ...state,
   //       chatRooms: action.chatRooms
   //     };
-  //   }
+  // }
   return state;
 };
 const store = createStore(
