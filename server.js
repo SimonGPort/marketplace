@@ -16,31 +16,45 @@ MongoClient.connect(url, { useUnifiedTopology: true })
     dbo = client.db("media-board");
   })
   .catch(err => console.log(err));
-// const cookieParser = require("cookie-parser");
-// app.use(cookieParser());
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 const users = [];
 const sessions = {};
 
 app.post("/signup", upload.none(), async (req, res) => {
-  let name = req.body.username;
+  let username = req.body.username;
   let pwd = req.body.password;
   let email = req.body.email;
-  console.log("name", name);
+  console.log("name", username);
   try {
-    const user = await dbo.collection("users").findOne({ username: name });
+    const user = await dbo.collection("users").findOne({ username: username });
     if (user) {
       return res.send(JSON.stringify({ success: false }));
     }
     await dbo
       .collection("users")
-      .insertOne({ username: name, password: pwd, email: email });
+      .insertOne({ username: username, password: pwd, email: email });
+    let sessionId = "" + Math.floor(Math.random() * 1000000);
+    sessions[sessionId] = req.body.username;
+    res.cookie("sid", sessionId);
     res.send(JSON.stringify({ success: true }));
   } catch (err) {
     console.log("/signup error", err);
     res.send(JSON.stringify({ success: false }));
     return;
   }
+});
+
+app.post("/autoLogin", (req, res) => {
+  let sessionId = req.cookies.sid;
+  let username = sessions[sessionId];
+  if (username === undefined) {
+    return console.log("an user enter the website without autoLogin");
+    res.send(JSON.stringify({ success: false }));
+  }
+  console.log("an user enter the website with autoLogin");
+  res.send(JSON.stringify({ success: true, username: username }));
 });
 
 reloadMagic(app);

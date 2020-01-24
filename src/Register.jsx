@@ -43,7 +43,7 @@ class Register extends Component {
       });
       this.props.history.push("/");
     } else {
-      alert(error);
+      alert("error");
     }
   };
 

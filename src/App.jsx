@@ -10,6 +10,27 @@ class UnconnectedApp extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.fetchSession();
+  }
+
+  fetchSession = async () => {
+    console.log("After the first render");
+    let response = await fetch("/autoLogin", { method: "POST" });
+    let body = await response.text();
+    body = JSON.parse(body);
+    console.log("/autoLogin response", body);
+    if (body.success) {
+      this.props.dispatch({
+        type: "signup",
+        login: true,
+        username: body.username
+      });
+    } else {
+      alert("error");
+    }
+  };
+
   renderSellPage = () => {
     return (
       <div>
