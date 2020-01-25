@@ -46,8 +46,8 @@ class Category extends Component {
             </Link>
           </div>
           <div className="container">
-            <Link to="/foodscience">
-              <div className="centered">Food Science</div>
+            <Link to="/Novels">
+              <div className="centered">Novels</div>
               <img src="/images/Food science.jpg" className="category" />
             </Link>
           </div>

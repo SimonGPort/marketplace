@@ -3,6 +3,9 @@ let reducer = (state, action) => {
   if (action.type === "signup") {
     return { ...state, login: action.login, user: action.username };
   }
+  if (action.type === "login") {
+    return { ...state, login: action.login, user: action.username };
+  }
   if (action.type === "logout") {
     return { ...state, login: action.login };
   }

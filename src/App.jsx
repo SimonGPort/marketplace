@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 import Category from "./Category.jsx";
 import Register from "./Register.jsx";
+import Login from "./Login.jsx";
+import Sell from "./Sell.jsx";
 
 class UnconnectedApp extends Component {
   constructor(props) {
@@ -27,14 +29,29 @@ class UnconnectedApp extends Component {
         username: body.username
       });
     } else {
-      alert("error");
+      console.log("no autologin");
     }
   };
 
-  renderSellPage = () => {
+  renderMainPage = () => {
     return (
       <div>
         <Category />
+      </div>
+    );
+  };
+  renderSellPage = () => {
+    return (
+      <div>
+        <Sell login={this.props.login} user={this.props.user} />
+      </div>
+    );
+  };
+
+  renderLoginPage = () => {
+    return (
+      <div>
+        <Login />
       </div>
     );
   };
@@ -55,12 +72,14 @@ class UnconnectedApp extends Component {
             login={this.props.login}
             user={this.props.user}
           />
-          <Route exact={true} path="/" render={this.renderSellPage} />
+          <Route exact={true} path="/" render={this.renderMainPage} />
           <Route
             exact={true}
             path="/register"
             render={this.renderRegisterPage}
           />
+          <Route exact={true} path="/Login" render={this.renderLoginPage} />
+          <Route exact={true} path="/Sell" render={this.renderSellPage} />
         </div>
       </BrowserRouter>
     );
