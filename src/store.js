@@ -9,6 +9,9 @@ let reducer = (state, action) => {
   if (action.type === "logout") {
     return { ...state, login: action.login };
   }
+  if (action.type === "addToCart") {
+    return { ...state, cart: state.cart.concat(action.addToCart) };
+  }
   // if (action.type === "user") {
   //   return { ...state, user: action.username };
   // }
@@ -49,7 +52,7 @@ let reducer = (state, action) => {
 const store = createStore(
   reducer,
   {
-    cart: {},
+    cart: [],
     user: "",
     login: false
   },

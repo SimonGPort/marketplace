@@ -2,8 +2,8 @@ let express = require("express");
 let app = express();
 let reloadMagic = require("./reload-magic.js");
 let multer = require("multer");
-let upload = multer({
-  dest: __dirname + "/upload"
+let uploads = multer({
+  dest: __dirname + "/uploads"
 });
 let mongodb = require("mongodb");
 let MongoClient = mongodb.MongoClient;
@@ -22,7 +22,7 @@ app.use(cookieParser());
 const users = [];
 const sessions = {};
 
-app.post("/signup", upload.none(), async (req, res) => {
+app.post("/signup", uploads.none(), async (req, res) => {
   let username = req.body.username;
   let pwd = req.body.password;
   let email = req.body.email;
@@ -46,12 +46,27 @@ app.post("/signup", upload.none(), async (req, res) => {
   }
 });
 
-app.post("/login", upload.none(), async (req, res) => {
+app.post("/itemToBuy/art", uploads.none(), async (req, res) => {
+  try {
+    const booksOfThisCategory = await dbo
+      .collection("books")
+      .find({ category: "Art" })
+      .toArray();
+    return res.send(JSON.stringify(booksOfThisCategory));
+  } catch (err) {
+    console.log("/itemToBuyError", err);
+    return;
+  }
+});
+
+app.post("/login", uploads.none(), async (req, res) => {
   let username = req.body.username;
   let pwd = req.body.password;
   console.log("name", username);
   try {
-    const user = await dbo.collection("users").findOne({ username: username });
+    const user = await dbo
+      .collection("users")
+      .findOne({ username: username, password: pwd });
     if (user) {
       let sessionId = "" + Math.floor(Math.random() * 1000000);
       sessions[sessionId] = req.body.username;
@@ -61,13 +76,13 @@ app.post("/login", upload.none(), async (req, res) => {
     }
     return;
   } catch (err) {
-    console.log("/login error", err);
+    console.log("login error", err);
     res.send(JSON.stringify({ success: false }));
     return;
   }
 });
 
-app.post("/sellingABook", upload.single("imgFile"), (req, res) => {
+app.post("/sellingABook", uploads.single("imgFile"), (req, res) => {
   console.log("can access");
   let sessionId = req.cookies.sid;
   let seller = sessions[sessionId];
@@ -122,7 +137,7 @@ app.post("/logout", (req, res) => {
 reloadMagic(app);
 
 app.use("/", express.static("build"));
-app.use("/upload", express.static("upload"));
+app.use("/uploads", express.static("uploads"));
 app.use("/", express.static("public"));
 
 // Your endpoints go after this line

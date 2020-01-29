@@ -46,3 +46,7 @@ body {
 .container {
   position: relative;
 }
+.card {
+  border: 1px solid white;
+  display: flex;
+}

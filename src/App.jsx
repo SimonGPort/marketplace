@@ -6,6 +6,7 @@ import Category from "./Category.jsx";
 import Register from "./Register.jsx";
 import Login from "./Login.jsx";
 import Sell from "./Sell.jsx";
+import BuyCategory from "./BuyCategory.jsx";
 
 class UnconnectedApp extends Component {
   constructor(props) {
@@ -37,6 +38,13 @@ class UnconnectedApp extends Component {
     return (
       <div>
         <Category />
+      </div>
+    );
+  };
+  renderBuyCategoryPage = () => {
+    return (
+      <div>
+        <BuyCategory />
       </div>
     );
   };
@@ -80,6 +88,7 @@ class UnconnectedApp extends Component {
           />
           <Route exact={true} path="/Login" render={this.renderLoginPage} />
           <Route exact={true} path="/Sell" render={this.renderSellPage} />
+          <Route exact={true} path="/art" render={this.renderBuyCategoryPage} />
         </div>
       </BrowserRouter>
     );

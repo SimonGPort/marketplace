@@ -8,7 +8,7 @@ class Sell extends Component {
     super(props);
     this.state = {
       title: "",
-      category: "",
+      category: "Art",
       description: "",
       imgFile: "",
       price: undefined
@@ -26,6 +26,9 @@ class Sell extends Component {
   };
   pictureInput = e => {
     this.setState({ imgFile: e.target.files[0] });
+  };
+  priceInput = evt => {
+    this.setState({ price: evt.target.value });
   };
 
   submitHandler = async evt => {
@@ -102,6 +105,11 @@ class Sell extends Component {
             </div>
             <input type="submit" value="Sell now" />
           </form>
+          <div>
+            <Link to="/">
+              <button>Main page</button>
+            </Link>
+          </div>
         </div>
       );
     }
